@@ -7,6 +7,7 @@ const RegistrationForm = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    company: ""
   });
 
   const handleChange = (e) => {
@@ -30,7 +31,7 @@ const RegistrationForm = () => {
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
-              Pseudo
+              Prénom
             </label>
             <input
               type="text"
@@ -44,7 +45,7 @@ const RegistrationForm = () => {
           </div>
           <div className="mb-4">
             <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
-              Rôle
+              Nom
             </label>
             <input
               type="text"
@@ -85,29 +86,46 @@ const RegistrationForm = () => {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
-              Confirmer le mot de passe
+            <label htmlFor="role" className="block text-sm font-medium text-gray-700">
+              Rôle
             </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={formData.confirmPassword}
+            <select
+              id="role"
+              name="role"
+              value={formData.role}
               onChange={handleChange}
               className="mt-1 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50"
               required
-            />
+            >
+              <option value="joueur">Joueur</option>
+              <option value="developpeur">Développeur</option>
+            </select>
           </div>
+          {formData.role === "developpeur" && (
+            <div className="mb-4">
+              <label htmlFor="company" className="block text-sm font-medium text-gray-700">
+                Société
+              </label>
+              <input
+                type="text"
+                id="company"
+                name="company"
+                value={formData.company}
+                onChange={handleChange}
+                className="mt-1 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50"
+                required
+              />
+            </div>
+          )}
           <button
             type="submit"
             button className="inline-flex items-center bg-amber-500 border-0 py-2 px-4 text-white hover:bg-amber-600 rounded-md transition duration-300"
           >
             S'inscrire
           </button>
-
           <div className="mt-4 text-center">
-            <p>Déjà un compte ? <a href="/connexion" className="text-blue-500">Se connecter</a></p>
-          </div>
+          <p>Vous avez déjà un compte ? <a href="/connexion" className="text-blue-500">Se connecter</a></p>
+        </div>
         </form>
       </div>
     </div>
