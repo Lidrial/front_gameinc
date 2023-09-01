@@ -5,6 +5,7 @@ import RegistrationForm from './components/Forms/RegistrationForm'
 import Navbar from "./components/Layout/navbar"
 import HomeScreen from "./screens/HomeScreen"
 import GameSubmissionForm from "./components/Forms/GameSubmissionForm"
+import Profile from "./components/Layout/Profile"
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
         <Route path="/inscription" element={<RegistrationForm />} />
         <Route path="/connexion" element={<LoginForm />} />
         <Route path="/poster_un_jeu" element={<GameSubmissionForm />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </Router>
   );
