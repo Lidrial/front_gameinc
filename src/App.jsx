@@ -1,35 +1,25 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
 
-function App() {
-  const [count, setCount] = useState(0)
+import LoginForm from './components/Forms/LoginForm'
+import RegistrationForm from './components/Forms/RegistrationForm'
+import Navbar from "./components/Layout/navbar"
+import HomeScreen from "./screens/HomeScreen"
+import GameSubmissionForm from "./components/Forms/GameSubmissionForm"
+import Profile from "./components/Layout/Profile"
 
+const App = () => {
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<HomeScreen />} />
+        <Route path="/inscription" element={<RegistrationForm />} />
+        <Route path="/connexion" element={<LoginForm />} />
+        <Route path="/poster_un_jeu" element={<GameSubmissionForm />} />
+        <Route path="/profile" element={<Profile />} />
+      </Routes>
+    </Router>
+  );
+};
 
 export default App
