@@ -1,20 +1,23 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import {useDispatch, useSelector} from "react-redux";
+import { logout } from '../../actions';
+import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from '@mui/icons-material/Logout';
+import {Button} from "@mui/material";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  //  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // logique pour vérifier si l'utilisateur est connecté ici.
-  // return (
-  //   <>
-  //    {isLoggedIn && (
-  //       <nav >
-  //        contenu navbar....
-  //      </nav>
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.isLoggedIn);
+  const role = useSelector((state) => state.role);
 
 
   const handleLogout = () => {
-    //logique de déconnexion, supprime le token d'authentification ?
+
+    localStorage.removeItem("access_token");
+    dispatch(logout());
+
   };
 
   return (
@@ -29,14 +32,14 @@ const Navbar = () => {
           className="flex items-center px-3 py-2 rounded text-black-500 hover:text-black-400"
         >
           <svg
-            className={`fill-current h-4 w-4 ${isOpen ? "hidden" : "block"}`}
+            className={`fill-white h-4 w-4 ${isOpen ? "hidden" : "block"}`}
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
           </svg>
           <svg
-            className={`fill-current h-4 w-4 ${isOpen ? "block" : "hidden"}`}
+            className={`fill-white h-4 w-4 ${isOpen ? "block" : "hidden"}`}
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -56,6 +59,12 @@ const Navbar = () => {
             Home
           </a>
           <a
+              href="/jeux"
+              className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white-200 mr-4"
+          >
+            Jeux
+          </a>
+          <a
             href="/poster_un_jeu"
             className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white-200 mr-4"
           >
@@ -68,18 +77,26 @@ const Navbar = () => {
             Profil
           </a>
         </div>
-        <div className="flex items-center">
-          <button className="inline-flex items-center bg-amber-500 border-0 py-2 px-4 text-white hover:bg-amber-600 rounded-md transition duration-300">
+        <div className="flex items-center gap-5">
+          <button className={"text-white"} onClick={() => console.log('isLoggedIn', isLoggedIn)}>log</button>
+          <button className={`${isLoggedIn ? "block" : "hidden"} inline-flex items-center bg-amber-500 border-0 py-2 px-4 text-white hover:bg-amber-600 rounded-md transition duration-300` }>
+            Favoris
+          </button>
+          <button className={`${isLoggedIn && (role === 1 || role === 2) ? "block" : "hidden"} inline-flex items-center bg-amber-500 border-0 py-2 px-4 text-white hover:bg-amber-600 rounded-md transition duration-300` }>
             Mes jeux
           </button>
-          <button
+          <Button
             onClick={handleLogout}
             className="ml-4 text-white hover:text-white-200 flex items-center"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="red" className="w-6 h-6">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
-            </svg>
-          </button>
+            <LogoutIcon className={"text-red-600"}/>
+          </Button>
+          <Button
+              href="/connexion"
+              className="ml-4 text-white hover:text-white-200 flex items-center"
+          >
+            <LoginIcon className={"text-green-600"}/>
+          </Button>
         </div>
 
       </div>

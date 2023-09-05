@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import {login, setRole, setToken, setUserId} from '../../actions';
+import axios from "axios";
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -6,6 +9,8 @@ const LoginForm = () => {
     password: "",
   });
 
+
+  const dispatch = useDispatch();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -17,6 +22,19 @@ const LoginForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
+    axios.post("http://127.0.0.1:8000/api/login", {
+      email: formData.email,
+      password: formData.password,
+    }).then((res) => {
+      console.log(res.data);
+      //store acces_token in local storage
+      localStorage.setItem("access_token", res.data.access_token);
+      dispatch(login());
+      dispatch(setRole(res.data.role_id));
+      dispatch(setToken(res.data.access_token));
+      dispatch(setUserId(res.data.user_id));
+    });
+
     // logique pour la connexion de ton back
   };
 
@@ -55,7 +73,7 @@ const LoginForm = () => {
           </div>
           <button
             type="submit"
-            button className="inline-flex items-center bg-amber-500 border-0 py-2 px-4 text-white hover:bg-amber-600 rounded-md transition duration-300"
+            className="inline-flex items-center bg-amber-500 border-0 py-2 px-4 text-white hover:bg-amber-600 rounded-md transition duration-300"
           >
             Se connecter
           </button>

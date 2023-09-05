@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-
+import { useState } from "react";
 const RegistrationForm = () => {
+
   const [formData, setFormData] = useState({
-    username: "",
+    firstName: "",
+    lastName: "",
+    userName: "",
     role: "",
     email: "",
     password: "",
@@ -55,6 +57,20 @@ const RegistrationForm = () => {
               onChange={handleChange}
               className="mt-1 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50"
               required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="userName" className="block text-sm font-medium text-gray-700">
+              Pseudo
+            </label>
+            <input
+                type="text"
+                id="userName"
+                name="userName"
+                value={formData.userName}
+                onChange={handleChange}
+                className="mt-1 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50"
+                required
             />
           </div>
           <div className="mb-4">
@@ -119,7 +135,7 @@ const RegistrationForm = () => {
           )}
           <button
             type="submit"
-            button className="inline-flex items-center bg-amber-500 border-0 py-2 px-4 text-white hover:bg-amber-600 rounded-md transition duration-300"
+            className="inline-flex items-center bg-amber-500 border-0 py-2 px-4 text-white hover:bg-amber-600 rounded-md transition duration-300"
           >
             S'inscrire
           </button>
