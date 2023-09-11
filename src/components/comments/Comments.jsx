@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from 'react'
 import axios from "axios";
 import {useSelector} from "react-redux";
-import {Box, Button, Card, Alert, CardActions, CardContent, Rating, Typography} from "@mui/material";
+import {Box, Alert, CardActions, CardContent, Rating, Typography} from "@mui/material";
+import { Button, Card, Divider } from 'ui-neumorphism'
 import {useParams} from "react-router-dom";
 import AddComment from "../comments/AddComment";
+import 'ui-neumorphism/dist/index.css'
 
 const Comments = () => {
     const gameId = useParams().id;
@@ -56,30 +58,47 @@ const Comments = () => {
     }, [commentIsSaved]);
 
     return (
-        <Box>
+        <Card
+            style={{ borderRadius: '20px'}}
+            className="p-5 m-5 max-w-3xl mx-auto"
+        >
             <AddComment onSaveComment={handleCommentSave} />
             {commentIsSaved && <Alert severity="success">Commentaire publié</Alert>}
             <Box>
                 {comments.map((comment) => (
-                    <Card key={comment.id} className="m-10">
-                        <CardContent>
-                            <Typography gutterBottom variant="h5" component="div">
-                                {comment.user_id}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                {comment.content}
-                            </Typography>
-                            <Rating className="mt-5" name="read-only" value={comment.rate} readOnly />
-                        </CardContent>
-                        <CardActions>
-                            <Button size="small">Share</Button>
-                            <Button size="small">Learn More</Button>
-                        </CardActions>
-                    </Card>
+                    <>
+                        {/*<div*/}
+                        {/*    style={{ borderRadius: '2px', background: '#e0e0e0', boxShadow:'2px 2px 2px #bebebe, -2px -2px 2px #ffffff' }}*/}
+                        {/*    className={"w-auto h-1 mx-10 mt-5 mb-5"}*/}
+                        {/*>*/}
+
+                        {/*</div>*/}
+                        <Divider dense elevated />
+                        <Card
+                            flat
+                            key={comment.id} className="py-2 px-5"
+                        >
+                            <CardContent>
+                                <Box className={"flex justify-between"}>
+                                    <Typography className="capitalize " gutterBottom variant="h5" component="div">
+                                        {comment.user.pseudo}
+                                    </Typography>
+                                    <Typography gutterBottom variant="span" component="div">
+                                        {comment.formattedDate}
+                                    </Typography>
+                                </Box>
+
+                                <Typography variant="body2" color="text.secondary">
+                                    {comment.content}
+                                </Typography>
+                                <Rating className="mt-5" name="read-only" value={comment.rate} readOnly />
+                            </CardContent>
+                        </Card>
+                    </>
 
                 ))}
             </Box>
-        </Box>
+        </Card>
     )
 }
 

@@ -3,6 +3,7 @@ import axios from "axios";
 import {useSelector} from "react-redux";
 import {useEffect, useRef, useState} from "react";
 import {Box, Rating, Typography} from "@mui/material";
+import {Card} from 'ui-neumorphism'
 
 const Game = () => {
     const id = useParams().id;
@@ -85,7 +86,7 @@ const Game = () => {
     }, [canvasRef]);
 
     return(
-        <Box className="flex justify-center">
+        <Card className="flex justify-center">
             {gameData ? (
                 <Box className="flex flex-col items-center max-w-screen-2xl">
                     <Box className="flex items-center gap-5">
@@ -103,7 +104,7 @@ const Game = () => {
             ) : (
                 <Typography>Loading...</Typography>
             )}
-        </Box>
+        </Card>
     )
 }
 

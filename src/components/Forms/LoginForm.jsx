@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import {login, setRole, setToken, setUserId} from '../../actions';
 import axios from "axios";
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +12,18 @@ const LoginForm = () => {
     password: "",
   });
 
+  const [error, setError] = useState(null);
+
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertSeverity, setAlertSeverity] = useState('success'); // 'success', 'error', 'warning', or 'info'
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
 
   const dispatch = useDispatch();
   const handleChange = (e) => {
@@ -33,9 +48,23 @@ const LoginForm = () => {
       dispatch(setRole(res.data.role_id));
       dispatch(setToken(res.data.access_token));
       dispatch(setUserId(res.data.user_id));
-    });
 
-    // logique pour la connexion de ton back
+      // Set the alert message and severity based on the response
+      setAlertMessage('Login successful');
+      setAlertSeverity('success');
+      setOpenSnackbar(true);
+
+      // Redirect to the home page
+      window.location.href = '/';
+    }).catch((error) => {
+      console.log(error.response.data);
+      setError(error.response.data)
+
+      // Set the alert message and severity based on the error
+      setAlertMessage('Login failed: ' + error.response.data.message);
+      setAlertSeverity('error');
+      setOpenSnackbar(true);
+    });
   };
 
   return (
@@ -77,6 +106,11 @@ const LoginForm = () => {
           >
             Se connecter
           </button>
+          <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+            <MuiAlert onClose={handleCloseSnackbar} severity={alertSeverity} elevation={6} variant="filled">
+              {alertMessage}
+            </MuiAlert>
+          </Snackbar>
         </form>
         <div className="mt-4 text-center">
           <p>Vous n'avez pas de compte ? <a href="/inscription" className="text-blue-500">S'inscrire</a></p>

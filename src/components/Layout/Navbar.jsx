@@ -18,6 +18,8 @@ const Navbar = () => {
     localStorage.removeItem("access_token");
     dispatch(logout());
 
+    //navigate log login page
+    window.location.href = '/connexion';
   };
 
   return (

@@ -1,6 +1,7 @@
 import axios from "axios";
-import {Button, Card, CardActions, CardContent, Rating, TextField, Typography} from "@mui/material";
-import React, {useEffect, useState} from "react";
+import {Box, Rating} from "@mui/material";
+import { Button, Card, TextField, CardContent, TextArea   } from 'ui-neumorphism'
+import React, {useEffect, useRef, useState} from "react";
 import {useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
 
@@ -13,17 +14,31 @@ const AddComment = ({ onSaveComment }) => {
         game_id: 0,
     });
 
+    // const {textAreaValue, setTextAreaValue} = useState(null);
+    // const {ratingInputValue, setRatingInputValue} = useState(null);
 
     const user_id = useSelector((state) => state.user_id);
     const game_id = useParams().id;
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        console.log(name, value)
-        setCommentData((prevCommentData) => ({
-            ...prevCommentData,
-            [name]: value,
-        }));
+        // Check if e.target and e.target.value are defined
+        if (e.target && e.target.value !== undefined) {
+            const { name, value } = e.target;
+            console.log(name, value);
+
+            setCommentData((prevCommentData) => ({
+                ...prevCommentData,
+                [name]: value,
+            }));
+        }else{
+            const { name, value } = e.event.target;
+            console.log(name, value);
+            setCommentData((prevCommentData) => ({
+                ...prevCommentData,
+                [name]: value,
+            }));
+        }
+
     };
 
     const handleSubmit = (e) => {
@@ -42,7 +57,17 @@ const AddComment = ({ onSaveComment }) => {
                 }
             }).then((res) => {
                 console.log(res.data);
+
+                // if (textAreaValue.current) {
+                //     setTextAreaValue(''); // Clear the TextArea
+                // }
+                //
+                // if (ratingInputValue.current) {
+                //     setRatingInputValue(0); // Clear the rating input
+                // }
+
                 onSaveComment()
+
 
             })
         }catch (error) {
@@ -63,19 +88,24 @@ const AddComment = ({ onSaveComment }) => {
     }, [user_id]);
 
     return (
-        <Card className="m-10">
-            <button onClick={() => console.log(game_id)}>test</button>
-            <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                    {commentData.user_id}
-                </Typography>
-                <TextField name="content" onChange={handleChange} className="w-full" id="outlined-basic" label="Ajouter un commentaire" variant="outlined" />
-                <Rating name="rate" className="mt-5" onChange={handleChange} />
+        <Card  className="m-10">
+            {/*<button onClick={() => console.log(game_id)}>test</button>*/}
+            <CardContent
+                className="flex flex-col justify-center"
+            >
+                {/*<Typography gutterBottom variant="h5" component="div">*/}
+                {/*    {commentData.user_id}*/}
+                {/*</Typography>*/}
+                <TextArea autoExpand name="content" inputStyles={{width: "100%"}} height={94} style={{display:"block", margin:"0", paddingTop:"16px"}} onChange={handleChange} id="outlined-basic" label="Ajouter un commentaire" />
+                <Box
+                    className="flex justify-between items-center"
+                >
+                    <Rating name="rate" className="" onChange={handleChange} />
+                    <Button color='var(--primary)' style={{   lineHeight:"1",}} className="my-5" onClick={handleSubmit}>Envoyer</Button>
+                    {/*<button onClick={() => console.log(commentData)}>test</button>*/}
+
+                </Box>
             </CardContent>
-            <CardActions>
-                <Button size="small" onClick={handleSubmit}>Envoyer</Button>
-                <button onClick={() => console.log(commentData)}>test</button>
-            </CardActions>
         </Card>
 
     )
